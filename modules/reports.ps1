@@ -1,4 +1,4 @@
-<#
+﻿<#
 .SYNOPSIS
     Módulo de funções de relatórios do AD
 .DESCRIPTION
