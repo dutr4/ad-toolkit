@@ -121,7 +121,9 @@ function Get-MenuChoice {
 function Wait-KeyPress {
     Write-Host ""
     Write-Host "  Pressione ESPAÇO para continuar..." -ForegroundColor DarkGray
-    $null = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
+    do {
+        $key = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
+    } while ($key.Character -ne ' ')
 }
 
 # Loop principal
