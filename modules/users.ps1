@@ -316,7 +316,7 @@ function Search-ADUsers {
     Write-Host "  Filtros disponíveis:" -ForegroundColor DarkGray
     Write-Host "  [1] Por nome" -ForegroundColor White
     Write-Host "  [2] Por login (SamAccountName)" -ForegroundColor White
-    Write-Host "  [3] Por OU" -ForegroundColor White
+    Write-Host "  [3] Por OU (lista usuários dentro da OU)" -ForegroundColor White
     Write-Host "  [4] Por e-mail" -ForegroundColor White
     Write-Host ""
     
@@ -329,19 +329,37 @@ function Search-ADUsers {
     }
 
     try {
-        $filter = switch ($filterType) {
-            "1" { "Name -like '*$filterValue*'" }
-            "2" { "SamAccountName -like '*$filterValue*'" }
-            "3" { "DistinguishedName -like '*$filterValue*'" }
-            "4" { "EmailAddress -like '*$filterValue*'" }
-            default { "Name -like '*$filterValue*'" }
+        $users = @()
+        
+        switch ($filterType) {
+            "1" { 
+                $users = Get-ADUser -Filter "Name -like '*$filterValue*'" -Properties EmailAddress, Enabled, LockedOut | Select-Object -First 50
+            }
+            "2" { 
+                $users = Get-ADUser -Filter "SamAccountName -like '*$filterValue*'" -Properties EmailAddress, Enabled, LockedOut | Select-Object -First 50
+            }
+            "3" { 
+                # Busca por OU usando SearchBase
+                Write-Host ""
+                Write-Host "  Buscando usuários na OU informada..." -ForegroundColor DarkGray
+                $users = Get-ADUser -Filter * -SearchBase $filterValue -Properties EmailAddress, Enabled, LockedOut -ErrorAction Stop
+            }
+            "4" { 
+                $users = Get-ADUser -Filter "EmailAddress -like '*$filterValue*'" -Properties EmailAddress, Enabled, LockedOut | Select-Object -First 50
+            }
+            default { 
+                $users = Get-ADUser -Filter "Name -like '*$filterValue*'" -Properties EmailAddress, Enabled, LockedOut | Select-Object -First 50
+            }
         }
-
-        $users = Get-ADUser -Filter $filter -Properties EmailAddress, Enabled, LockedOut | Select-Object -First 50
         
         if (-not $users) {
             Write-Host "  Nenhum usuário encontrado." -ForegroundColor Yellow
             return
+        }
+
+        # Garantir que $users seja um array
+        if ($users -isnot [System.Array]) {
+            $users = @($users)
         }
 
         Write-Host ""
@@ -356,6 +374,8 @@ function Search-ADUsers {
     }
     catch {
         Write-Host "  Erro: $($_.Exception.Message)" -ForegroundColor Red
+        Write-Host "  Dica: Verifique se a OU está no formato correto:" -ForegroundColor DarkGray
+        Write-Host "        OU=NomeOU,DC=dominio,DC=local" -ForegroundColor DarkGray
     }
 }
 
