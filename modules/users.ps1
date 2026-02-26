@@ -1,16 +1,16 @@
-﻿<#
+﻿﻿<#
 .SYNOPSIS
     Módulo de funções de usuários do AD
 #>
 
-# Garantir que o EventLog source existe
-if (-not [System.Diagnostics.EventLog]::SourceExists("AD-Toolkit")) {
-    try {
+# Garantir que o EventLog source existe (silencioso)
+try {
+    if (-not [System.Diagnostics.EventLog]::SourceExists("AD-Toolkit")) {
         New-EventLog -LogName Application -Source "AD-Toolkit" -ErrorAction SilentlyContinue
     }
-    catch {
-        # Ignorar se não tiver permissão para criar
-    }
+}
+catch {
+    # Ignorar se não tiver permissão
 }
 
 function Get-LockedUsersDetailed {

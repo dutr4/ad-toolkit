@@ -1,4 +1,4 @@
-﻿﻿<#
+﻿﻿﻿<#
 .SYNOPSIS
     AD Toolkit - Ferramenta de gestão do Active Directory
 .DESCRIPTION
@@ -20,10 +20,15 @@ $Script:Title = @"
 ╚═╝  ╚═╝╚═════╝        ╚═╝    ╚═════╝  ╚═════╝ ╚══════╝╚═╝  ╚═╝╚═╝   ╚═╝   
 "@
 
-# Importar módulos
+# Importar módulos (silenciar erros de carregamento)
 $ModulesPath = Join-Path $PSScriptRoot "modules"
 Get-ChildItem -Path $ModulesPath -Filter "*.ps1" | ForEach-Object {
-    . $_.FullName
+    try {
+        . $_.FullName
+    }
+    catch {
+        # Ignorar erros de carregamento
+    }
 }
 
 # Funções de menu
