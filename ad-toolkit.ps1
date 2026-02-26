@@ -1,4 +1,4 @@
-﻿﻿﻿<#
+﻿<#
 .SYNOPSIS
     AD Toolkit - Ferramenta de gestão do Active Directory
 .DESCRIPTION

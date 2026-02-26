@@ -1,4 +1,4 @@
-﻿﻿﻿﻿<#
+﻿<#
 .SYNOPSIS
     Módulo de funções de computadores do AD
 #>
