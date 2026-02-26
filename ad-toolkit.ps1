@@ -1,4 +1,4 @@
-﻿<#
+﻿﻿<#
 .SYNOPSIS
     AD Toolkit - Ferramenta de gestão do Active Directory
 .DESCRIPTION
@@ -115,7 +115,7 @@ function Get-MenuChoice {
 
 function Wait-KeyPress {
     Write-Host ""
-    Write-Host "  Pressione qualquer tecla para continuar..." -ForegroundColor DarkGray
+    Write-Host "  Pressione ESPAÇO para continuar..." -ForegroundColor DarkGray
     $null = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
 }
 

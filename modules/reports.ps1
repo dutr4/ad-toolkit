@@ -1,4 +1,4 @@
-﻿<#
+﻿﻿<#
 .SYNOPSIS
     Módulo de funções de relatórios do AD
 .DESCRIPTION
@@ -182,7 +182,7 @@ function Export-InactiveComputersCSV {
         $reportData = foreach ($computer in $computers) {
             $lastLogon = if ($computer.LastLogonTimeStamp) { 
                 [DateTime]::FromFileTime($computer.LastLogonTimeStamp).ToString($Script:DateFormat)
-                $daysSince = [Math]::Floor((Get-Date) - [DateTime]::FromFileTime($computer.LastLogonTimeStamp)).TotalDays
+                $daysSince = [Math]::Floor(((Get-Date) - [DateTime]::FromFileTime($computer.LastLogonTimeStamp)).TotalDays)
             } else { 
                 "Nunca"
                 $daysSince = 9999
