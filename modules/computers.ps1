@@ -1,4 +1,4 @@
-﻿﻿<#
+﻿﻿﻿<#
 .SYNOPSIS
     Módulo de funções de computadores do AD
 #>
@@ -139,7 +139,7 @@ function Invoke-GPUpdateRemote {
                 # Executar GPUpdate remotamente via Invoke-Command
                 $result = Invoke-Command -ComputerName $computer -ScriptBlock {
                     gpupdate /force
-                } -ErrorAction Stop -TimeoutSeconds 60
+                } -ErrorAction Stop
                 
                 Write-Host "✓ OK" -ForegroundColor Green
                 $success++
@@ -346,7 +346,7 @@ function Get-ComputerStatus {
             try {
                 $osInfo = Invoke-Command -ComputerName $computer.DNSHostName -ScriptBlock {
                     Get-CimInstance Win32_OperatingSystem
-                } -ErrorAction Stop -TimeoutSeconds 10
+                } -ErrorAction Stop
                 
                 $uptime = (Get-Date) - $osInfo.LastBootUpTime
                 Write-Host "  Uptime: $($uptime.Days) dias, $($uptime.Hours) horas" -ForegroundColor White
