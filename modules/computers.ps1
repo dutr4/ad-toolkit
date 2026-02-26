@@ -1,4 +1,4 @@
-﻿<#
+﻿﻿<#
 .SYNOPSIS
     Módulo de funções de computadores do AD
 #>
@@ -157,10 +157,6 @@ function Invoke-GPUpdateRemote {
 
     Write-Host ""
     Write-Host "  Resumo: $success sucesso(s), $failed falha(s)" -ForegroundColor $(if ($failed -eq 0) { "Green" } else { "Yellow" })
-}
-catch {
-    Write-Host "  Erro: $($_.Exception.Message)" -ForegroundColor Red
-}
 }
 
 function Get-ComputersByOU {
