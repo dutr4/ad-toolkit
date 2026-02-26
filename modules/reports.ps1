@@ -241,8 +241,8 @@ function Export-DomainReportHTML {
         $allUsers = Get-ADUser -Filter * -Properties Enabled, LockedOut, PasswordExpired
         $enabledUsers = ($allUsers | Where-Object { $_.Enabled -eq $true }).Count
         $disabledUsers = ($allUsers | Where-Object { $_.Enabled -eq $false }).Count
-        $lockedUsers = ($allUsers | Where-Object { $_.LockedOut -eq $true }).Count
-        $expiredPasswords = ($allUsers | Where-Object { $_.PasswordExpired -eq $true }).Count
+        $lockedUsers = ($allUsers | Where-Object { $_.Enabled -eq $true -and $_.LockedOut -eq $true }).Count
+        $expiredPasswords = ($allUsers | Where-Object { $_.Enabled -eq $true -and $_.PasswordExpired -eq $true }).Count
         
         # Estatísticas de computadores
         $allComputers = Get-ADComputer -Filter * -Properties Enabled, OperatingSystem, LastLogonTimeStamp
