@@ -81,7 +81,7 @@ function Show-ComputersMenu {
     Show-Header
     Write-Host "  COMPUTADORES" -ForegroundColor Yellow
     Write-Host ""
-    Write-Host "  [1] Computadores inativos (90+ dias)" -ForegroundColor White
+    Write-Host "  [1] Computadores inativos - 90 dias ou mais" -ForegroundColor White
     Write-Host "  [2] Forçar GPUpdate remoto" -ForegroundColor White
     Write-Host "  [3] Listar computadores por OU" -ForegroundColor White
     Write-Host "  [4] Status de computador específico" -ForegroundColor White
