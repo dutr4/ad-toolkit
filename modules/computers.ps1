@@ -1,4 +1,4 @@
-﻿﻿﻿<#
+﻿﻿﻿﻿<#
 .SYNOPSIS
     Módulo de funções de computadores do AD
 #>
@@ -305,8 +305,9 @@ function Get-ComputerStatus {
         Write-Host "  ├─────────────────────────────────────────────────" -ForegroundColor DarkGray
         
         $lastLogon = if ($computer.LastLogonTimeStamp) { 
-            [DateTime]::FromFileTime($computer.LastLogonTimeStamp).ToString('dd/MM/yyyy HH:mm')
-            $daysSinceLogon = [Math]::Floor((Get-Date) - [DateTime]::FromFileTime($computer.LastLogonTimeStamp)).TotalDays
+            $logonDate = [DateTime]::FromFileTime($computer.LastLogonTimeStamp)
+            $logonDate.ToString('dd/MM/yyyy HH:mm')
+            $daysSinceLogon = [Math]::Floor(((Get-Date) - $logonDate).TotalDays)
         } else { 
             "Nunca"
             $daysSinceLogon = "-"
