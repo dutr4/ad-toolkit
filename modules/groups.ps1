@@ -57,12 +57,12 @@ function Get-GroupMembers {
 
         # Agrupar por tipo
         $users = $members | Where-Object { $_.objectClass -eq "user" }
-        $groups = $members | Where-Object { $_.objectClass -eq "group" }
+        $nestedGroups = $members | Where-Object { $_.objectClass -eq "group" }
         $computers = $members | Where-Object { $_.objectClass -eq "computer" }
 
         Write-Host ""
         Write-Host "  👤 Usuários: $($users.Count)" -ForegroundColor White
-        Write-Host "  📁 Grupos aninhados: $($groups.Count)" -ForegroundColor White
+        Write-Host "  📁 Grupos aninhados: $($nestedGroups.Count)" -ForegroundColor White
         Write-Host "  💻 Computadores: $($computers.Count)" -ForegroundColor White
         Write-Host ""
 
@@ -100,7 +100,8 @@ function Add-UserToGroupInteractive {
         $group = Get-ADGroup -Identity $groupName -ErrorAction Stop
 
         # Verificar se já é membro
-        if (Get-ADGroupMember -Identity $group -Recursive | Where-Object { $_.SamAccountName -eq $user.SamAccountName }) {
+        $memberOf = Get-ADUser -Identity $user | Get-ADPrincipalGroupMembership -ErrorAction SilentlyContinue
+        if ($memberOf | Where-Object { $_.DistinguishedName -eq $group.DistinguishedName }) {
             Write-Host "  Usuário já é membro deste grupo." -ForegroundColor Yellow
             return
         }

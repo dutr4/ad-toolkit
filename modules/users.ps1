@@ -3,6 +3,16 @@
     Módulo de funções de usuários do AD
 #>
 
+# Garantir que o EventLog source existe
+if (-not [System.Diagnostics.EventLog]::SourceExists("AD-Toolkit")) {
+    try {
+        New-EventLog -LogName Application -Source "AD-Toolkit" -ErrorAction SilentlyContinue
+    }
+    catch {
+        # Ignorar se não tiver permissão para criar
+    }
+}
+
 function Get-LockedUsersDetailed {
     <#
     .SYNOPSIS
@@ -226,6 +236,9 @@ function Unlock-ADUserInteractive {
         Write-Host "  ✓ Usuário desbloqueado com sucesso!" -ForegroundColor Green
 
         # Log da ação
+        if (-not [System.Diagnostics.EventLog]::SourceExists("AD-Toolkit")) {
+            New-EventLog -LogName Application -Source "AD-Toolkit" -ErrorAction SilentlyContinue
+        }
         Write-EventLog -LogName "Application" -Source "AD-Toolkit" -EntryType Information -EventId 1001 -Message "Usuário $($user.SamAccountName) desbloqueado por $env:USERNAME" -ErrorAction SilentlyContinue
 
     }
